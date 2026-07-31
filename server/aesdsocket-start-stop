@@ -1,0 +1,29 @@
+#!/bin/sh
+
+DAEMON="aesdsocket"
+DAEMON_PATH="/usr/bin/${DAEMON}"
+
+case "$1" in
+    start)
+        echo "Starting ${DAEMON}"
+        start-stop-daemon -S -q -x "${DAEMON_PATH}" -- -d
+        ;;
+
+    stop)
+        echo "Stopping ${DAEMON}"
+        start-stop-daemon -K -q -n "${DAEMON}" -s TERM
+        ;;
+
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
